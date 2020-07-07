@@ -1,5 +1,6 @@
 package digital.wander.covidtrack.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,8 @@ public class UserController {
 		int totalActiveCases = totalCountObject.getActive();
 		int totalRecovered = totalCountObject.getRecovered();
 		int totalDeceased = totalCountObject.getDeaths();
-		Map<String, LocationStats> copyOfAllLocationStatsMap = allLocationStatsMap;
+		Map<String, LocationStats> copyOfAllLocationStatsMap = new LinkedHashMap<>(); 
+		copyOfAllLocationStatsMap.putAll(allLocationStatsMap);
 		copyOfAllLocationStatsMap.remove("Total");
 		copyOfAllLocationStatsMap.remove("State Unassigned");
 		model.addAttribute("locationStats", copyOfAllLocationStatsMap);
