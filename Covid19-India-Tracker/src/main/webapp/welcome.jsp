@@ -17,25 +17,34 @@
 		<!-- Google Fonts Roboto -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 		<!-- Bootstrap core CSS -->
-		<link href="${contextPath}/resources/css/bootstrap.css" rel="stylesheet">
+		<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"></link>
 	</head>
 	
 	<body>
 		<div class="container">
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
-				<form id="logoutForm" method="POST" action="${contextPath}/logout">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				</form>
-				
-				<h2>
-					Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
-				</h2>
-			</c:if>
+			<nav class="navbar sticky-top navbar-dark bg-dark">
+				<c:if test="${pageContext.request.userPrincipal.name != null}">
+					<form id="logoutForm" method="POST" action="${contextPath}/logout">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</form>
+					<div class="col-11">
+						<span class="navbar-brand mb-0 h1 float-md-left">
+							Welcome ${pageContext.request.userPrincipal.name}
+						</span>
+					</div>
+					<div>
+						<form class="form-inline">
+						    <button class="btn btn-outline-success" type="button" onclick="document.forms['logoutForm'].submit()">Logout</button>
+						</form>
+					</div>
+				</c:if>	
+			</nav>
 		</div>
 		<div class="container">
-			<h1>Coronavirus Tracker Application</h1>
-			<p> This application lists the current number of cases reported in India </p>
-			<div class="jumbotron" style="width: 500px; float: left; height: 400px; margin: 10px">
+			<h1>&nbsp;Coronavirus Tracker Application</h1>
+			<p>&nbsp;&nbsp;&nbsp;This application lists the current number of cases reported in India</p>
+			<div class="jumbotron" style="width: 535px; float: left; height: 400px; margin: 10px">
 				<h1 class="display-4">${totalReportedCases}</h1>
 				<p class="lead">Total cases reported as of today</p>
 				<hr class="my-4">
@@ -44,35 +53,41 @@
 				<p><span>Total deaths</span> <span>${totalDeceased}</span></p>
 			</div>
 	
-			<div class="container-fluid" id="chartContainer" style="width: 500px; float: left; height: 400px; margin: 10px"></div>
-	
-			<table id="locationStatsTable" class="table table-striped table-bordered">
-				<thead class="thead-dark">
-					<tr>
-						<th style="width: 40%; font-size: 16px;">State</th>
-						<th style="width: 15%; font-size: 16px;">Total Cases</th>
-						<th style="width: 15%; font-size: 16px;">Active cases</th>
-						<th style="width: 15%; font-size: 16px;">Recovered</th>
-						<th style="width: 15%; font-size: 16px;">Deaths</th>
-					</tr>
-				</thead>
-				<c:forEach var="mapItem" items="${locationStats}">
-					<table class="table table-hover table-striped table-bordered">
+			<div class="container-fluid" id="chartContainer" style="width: 535px; float: right; height: 400px; margin: 10px"></div>
+			
+			<div class="table-responsive-md">
+				<table id="locationStatsTable" class="table table-striped table-bordered table-hover">
+					<thead style="background-color: #ADADAD;">
 						<tr>
-							<td style="width: 40%; font-size: 14px;"><c:out value="${mapItem.key}" /></td>
-							<td style="width: 15%; font-size: 14px;"><c:out value="${mapItem.value.confirmed}" /></td>
-							<td style="width: 15%; font-size: 14px;"><c:out value="${mapItem.value.active}" /></td>
-							<td style="width: 15%; font-size: 14px;"><c:out value="${mapItem.value.recovered}" /></td>
-							<td style="width: 15%; font-size: 14px;"><c:out value="${mapItem.value.deaths}" /></td>
+							<th>State</th>
+							<th>Total Cases</th>
+							<th>Active cases</th>
+							<th>Recovered</th>
+							<th>Deaths</th>
 						</tr>
-					</table>
-				</c:forEach>
-			</table>
+					</thead>
+					<c:forEach var="mapItem" items="${locationStats}">
+							<tr>
+								<td><c:out value="${mapItem.key}" /></td>
+								<td><c:out value="${mapItem.value.confirmed}" /></td>
+								<td><c:out value="${mapItem.value.active}" /></td>
+								<td><c:out value="${mapItem.value.recovered}" /></td>
+								<td><c:out value="${mapItem.value.deaths}" /></td>
+							</tr>
+					</c:forEach>
+				</table>
+			</div>
 		</div>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
-		
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+		<script>
+			$(document).ready(function(){
+			    $('#locationStatsTable').dataTable();
+			});
+		</script>
 		<script type="text/javascript">
 			window.onload = function() {
 	
