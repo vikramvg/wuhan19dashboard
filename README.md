@@ -1,1 +1,1 @@
-# covidtracker
+# Wuhan19Dashboard
